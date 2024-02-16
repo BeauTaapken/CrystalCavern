@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{54C324D4-81AD-40F6-B425-21E2EB4C2EE9}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "CrystalCavern",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
