@@ -10,7 +10,6 @@ ACrystal::ACrystal()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//TODO this is the spot i'm gonna have to add all needed items
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	SetRootComponent(DefaultSceneRoot);
 	PyramidTop = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PyramidTop"));
