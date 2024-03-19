@@ -3,31 +3,39 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GlobalPlayerChecks.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
-#include "LevelRestartTrigger.generated.h"
+#include "WinTrigger.generated.h"
 
 UCLASS()
-class CRYSTALCAVERN_API ALevelRestartTrigger : public AActor
+class CRYSTALCAVERN_API AWinTrigger : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ALevelRestartTrigger();
+	AWinTrigger();
 
-protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+protected:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
-private:
+private:	
 	UPROPERTY(EditAnywhere, Category="Setup")
 	USceneComponent* DefaultSceneRoot;
 	UPROPERTY(EditAnywhere, Category="Setup")
 	UBoxComponent* Trigger;
+	UPROPERTY(EditAnywhere, Category="Setup")
+	TArray<FName> LevelNames;
+
+	UFUNCTION(BlueprintPure)
+	bool AnyCrystalsRemaining() const;
+
+	UFUNCTION()
+	void CompleteLevel();
+	
+	UFUNCTION(BlueprintPure)
+	int GetCurrentLevelIndex() const;
 };

@@ -22,7 +22,6 @@ ALevelRestartTrigger::ALevelRestartTrigger()
 void ALevelRestartTrigger::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -38,14 +37,7 @@ void ALevelRestartTrigger::NotifyActorBeginOverlap(AActor* OtherActor)
 	
 	if (OtherActor == UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn())
 	{
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0.0f, 1.0f, TimeToFade, FLinearColor::Black, false, true);
-		GetWorldTimerManager().SetTimer(WaitForFade, this, &ALevelRestartTrigger::ReloadLevel, TimeToFade, false);
+		UGameplayStatics::ApplyDamage(OtherActor, 1.0f, nullptr, nullptr, nullptr);
 	}
-}
-
-void ALevelRestartTrigger::ReloadLevel()
-{
-	UGameplayStatics::OpenLevel(GetWorld(), FName(UGameplayStatics::GetCurrentLevelName(GetWorld())));
-	GetWorldTimerManager().ClearTimer(WaitForFade);
 }
 

@@ -51,6 +51,25 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerPawn::MoveRight);
 }
 
+float APlayerPawn::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	if (!TakingDamage)
+	{
+		TakingDamage = true;
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0.0f, 1.0f, TimeToFade, FLinearColor::Black, false, true);
+		GetWorldTimerManager().SetTimer(WaitForFade, this, &APlayerPawn::ReloadLevel, TimeToFade, false);
+	}
+	
+	return Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+}
+
+void APlayerPawn::ReloadLevel()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), FName(UGameplayStatics::GetCurrentLevelName(GetWorld())));
+	GetWorldTimerManager().ClearTimer(WaitForFade);
+}
+
 void APlayerPawn::MoveForward(float AxisValue)
 {
 	if (PlayerMesh == nullptr)

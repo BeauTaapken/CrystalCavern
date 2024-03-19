@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/PointLightComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
+#include "Components/TimelineComponent.h"
 #include "Crystal.generated.h"
 
 UCLASS()
@@ -11,23 +14,51 @@ class CRYSTALCAVERN_API ACrystal : public AActor
 {
 	GENERATED_BODY()
 	
-	public:	
-		// Sets default values for this actor's properties
-		ACrystal();
+public:	
+	// Sets default values for this actor's properties
+	ACrystal();
 
-	protected:
-		// Called when the game starts or when spawned
-		virtual void BeginPlay() override;
+	UFUNCTION()
+	void AttractionProgress(float Value);
+	UFUNCTION()
+	void ScaleProgress(float Value);
+	UFUNCTION()
+	void LightIntensityProgress(float Value);
 
-	public:	
-		// Called every frame
-		virtual void Tick(float DeltaTime) override;
+protected:
+	FTimeline CurveTimeline;
+	UPROPERTY(EditAnywhere, Category = "Timeline")
+	UCurveFloat* AttractionCurve;
+	UPROPERTY(EditAnywhere, Category = "Timeline")
+	UCurveFloat* ScaleCurve;
+	UPROPERTY(EditAnywhere, Category = "Timeline")
+	UCurveFloat* LightIntensityCurve;
 
-	private:
-		UPROPERTY(EditAnywhere, Category="Setup")
-		USceneComponent* DefaultSceneRoot;
-		UPROPERTY(EditAnywhere, Category="Setup")
-		UStaticMeshComponent* PyramidTop;
-		UPROPERTY(EditAnywhere, Category="Setup")
-		UStaticMeshComponent* PyramidBottom;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+private:
+	UFUNCTION()
+	void DestroyCrystal();
+
+	UPROPERTY(EditAnywhere, Category="Setup")
+	USphereComponent* DefaultSceneRoot;
+	UPROPERTY(EditAnywhere, Category="Setup")
+	UStaticMeshComponent* PyramidTop;
+	UPROPERTY(EditAnywhere, Category="Setup")
+	UStaticMeshComponent* PyramidBottom;
+	UPROPERTY(EditAnywhere, Category="Setup")
+	UPointLightComponent* PointLight;
+	UPROPERTY()
+	FVector StartingLocation;
+	UPROPERTY()
+	FVector StartingScale;
+	UPROPERTY()
+	float StartingIntensity;
 };
